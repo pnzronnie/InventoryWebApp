@@ -372,3 +372,5 @@ Web.*.config
 
 Setup1/
 SetupApp/
+*.db-shm
+*.db-wal

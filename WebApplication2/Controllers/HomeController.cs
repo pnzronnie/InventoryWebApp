@@ -6,36 +6,42 @@ using System.Data;
 using System.IO;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebApplication2.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly Context _context;
         private readonly ILogger<HomeController> _logger;
+        DbContextOptions<Context> _contextOptions;
 
-        public HomeController(ILogger<HomeController> logger, Context context)
+        public HomeController(ILogger<HomeController> logger, DbContextOptions<Context> contextOptions)
         {
             _logger = logger;
-            _context = context;
+            _contextOptions = contextOptions;
         }
 
         public IActionResult Index()
         {
             System.IO.File.Copy("computerservice.db", "./File/computerservice.db", true);
-            var list = _context.Orders.Where(i => i.InProgress && !i.Deleted).Select(a => new
+
+            using (Context _context = new Context(_contextOptions))
             {
-                a.Id,
-                a.DateCreation,
-                a.Master.NameMaster,
-                a.TypeTechnic.NameTypeTechnic,
-                a.BrandTechnic.NameBrandTechnic,
-                a.ModelTechnic,
-                a.Client.NameClient,
-                a.Diagnosis,
-                a.UrgentRepairs
-            }).OrderByDescending(i => i.Id).ToList();
-            return View(list);            
+                var list = _context.Orders.Where(i => i.InProgress && !i.Deleted).Select(a => new
+                {
+                    a.Id,
+                    a.DateCreation,
+                    a.Master.NameMaster,
+                    a.TypeTechnic.NameTypeTechnic,
+                    a.BrandTechnic.NameBrandTechnic,
+                    a.ModelTechnic,
+                    a.Client.NameClient,
+                    a.Diagnosis,
+                    a.UrgentRepairs
+                }).OrderByDescending(i => i.Id).ToList();
+
+                return View(list);
+            }
         }
 
         public IActionResult Privacy()
