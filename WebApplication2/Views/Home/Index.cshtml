@@ -1,0 +1,56 @@
+﻿@using WebApplication2.Models
+
+@{
+    ViewData["Title"] = "База данных компьютерного сервиса";
+}
+
+
+<div class="row">
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>№</th>
+                    <th>Дата приема</th>
+                    <th>Мастер</th>
+                    <th>Тип аппарата</th>
+                    <th>Производитель</th>
+                    <th>Модель</th>
+                    <th>Заказчик</th>
+                    <th>Диагноз</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var i in Model)
+                {                
+                    @if (i.UrgentRepairs == true)
+                    {
+                        <tr style="color: indianred;">
+                            <td>@i.Id</td>
+                            <td>@i.DateCreation</td>
+                            <td>@i.NameMaster</td>
+                            <td>@i.NameTypeTechnic</td>
+                            <td>@i.NameBrandTechnic</td>
+                            <td>@i.ModelTechnic</td>
+                            <td>@i.NameClient</td>
+                            <td>@i.Diagnosis</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr>
+                            <td>@i.Id</td>
+                            <td>@i.DateCreation</td>
+                            <td>@i.NameMaster</td>
+                            <td>@i.NameTypeTechnic</td>
+                            <td>@i.NameBrandTechnic</td>
+                            <td>@i.ModelTechnic</td>
+                            <td>@i.NameClient</td>
+                            <td>@i.Diagnosis</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
